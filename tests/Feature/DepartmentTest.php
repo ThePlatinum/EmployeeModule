@@ -1,10 +1,13 @@
 <?php
 
 use App\Models\Department;
+use App\Models\User;
 
 $endpoint = "api/departments";
 
 it('can get departments list', function () use ($endpoint) {
+    $this->actingAs(User::factory()->create());
+
     $response = $this->get($endpoint);
     $response->assertStatus(200);
 
@@ -14,6 +17,8 @@ it('can get departments list', function () use ($endpoint) {
 });
 
 it('can create departments with correct slug and name for departments', function () use ($endpoint) {
+    $this->actingAs(User::factory()->create());
+
     $departmentsData = [
         'name' => 'Development',
     ];
@@ -31,6 +36,8 @@ it('can create departments with correct slug and name for departments', function
 });
 
 it('can get a single department by slug', function () use ($endpoint) {
+    $this->actingAs(User::factory()->create());
+
     Department::factory()->create([
         'name' => "Development"
     ]);
@@ -48,6 +55,8 @@ it('can get a single department by slug', function () use ($endpoint) {
 });
 
 it('can edit a single department', function () use ($endpoint) {
+    $this->actingAs(User::factory()->create());
+
     Department::factory()->create([
         'name' => "Development"
     ]);
@@ -65,6 +74,8 @@ it('can edit a single department', function () use ($endpoint) {
 });
 
 it('can delete a single department', function () use ($endpoint) {
+    $this->actingAs(User::factory()->create());
+
     $department = Department::factory()->create([
         'name' => 'Development',
     ]);

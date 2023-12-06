@@ -1,2 +1,0 @@
-
-- Protect endpoints with auth

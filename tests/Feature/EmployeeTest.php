@@ -1,10 +1,13 @@
 <?php
 
 use App\Models\Employee;
+use App\Models\User;
 
 $endpoint = "api/employees";
 
 it('can get employees list', function () use ($endpoint) {
+    $this->actingAs(User::factory()->create());
+
     $response = $this->get($endpoint);
     $response->assertStatus(200);
 
@@ -14,6 +17,8 @@ it('can get employees list', function () use ($endpoint) {
 });
 
 it('can create employees', function () use ($endpoint) {
+    $this->actingAs(User::factory()->create());
+
     $employeesData = [
         'first_name' => 'Emmanuel',
         'email' => 'emmanuel@gmail.com',
@@ -31,6 +36,8 @@ it('can create employees', function () use ($endpoint) {
 });
 
 it('can get a single employee by id', function () use ($endpoint) {
+    $this->actingAs(User::factory()->create());
+
     $employeeCreated = Employee::factory()->create();
 
     $response = $this->get("$endpoint/$employeeCreated->id");
@@ -43,6 +50,8 @@ it('can get a single employee by id', function () use ($endpoint) {
 });
 
 it('can edit a single employee', function () use ($endpoint) {
+    $this->actingAs(User::factory()->create());
+
     $employeeCreated = Employee::factory()->create();
 
     $response = $this->put("$endpoint/$employeeCreated->id", [
@@ -58,6 +67,8 @@ it('can edit a single employee', function () use ($endpoint) {
 });
 
 it('can delete a single employee', function () use ($endpoint) {
+    $this->actingAs(User::factory()->create());
+
     $employeeCreated = Employee::factory()->create();
 
     $response = $this->delete("$endpoint/{$employeeCreated->id}");
@@ -69,6 +80,8 @@ it('can delete a single employee', function () use ($endpoint) {
 });
 
 it('has correct full name', function () use ($endpoint) {
+    $this->actingAs(User::factory()->create());
+
     $employeeCreated = Employee::factory()->create([
         'first_name' => "Emmanuel",
         'last_name' => "Adesina"
