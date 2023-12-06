@@ -67,3 +67,15 @@ it('can delete a single employee', function () use ($endpoint) {
 
     $this->get("$endpoint/{$employeeCreated->id}")->assertStatus(404);
 });
+
+it('has correct full name', function () use ($endpoint) {
+    $employeeCreated = Employee::factory()->create([
+        'first_name' => "Emmanuel",
+        'last_name' => "Adesina"
+    ]);
+
+    $response = $this->get("$endpoint/{$employeeCreated->id}");
+    $employee = $response->json();
+
+    expect($employee['full_name'])->toBe("Emmanuel Adesina");
+});
