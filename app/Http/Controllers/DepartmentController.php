@@ -42,7 +42,7 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        return $department;
+        return $department->load('employees');
     }
 
     /**
@@ -63,5 +63,43 @@ class DepartmentController extends Controller
     {
         $department->delete();
         return response('', 204);
+    }
+
+    /**
+     * Attach an employee or a list of employees to a department.
+     */
+    public function attachEmployee(Request $request, Department $department)
+    {
+        $multiple = request()->query('multiple', false);
+
+        if ($multiple) {
+            $request->validate([
+                'employee_id' => 'required|array',
+                'employee_id.*' => 'required|exists:employees,id',
+            ]);
+        } else {
+            $request->validate([
+                'employee_id' => 'required|exists:employees,id',
+            ]);
+        }
+
+        $department->employees()->attach($request->employee_id);
+
+        return response(['message' => 'Employee attached to the department successfully']);
+    }
+
+    /**
+     * Update the list of employees for a department.
+     */
+    public function updateEmployees(Request $request, Department $department)
+    {
+        $request->validate([
+            'employee_id' => 'required|array|exists:employees,id',
+        ]);
+
+        $employeeIds = $request->input('employee_id');
+        $department->employees()->sync($employeeIds);
+
+        return response(['message' => 'Employees updated for the department successfully']);
     }
 }

@@ -30,4 +30,9 @@ class Employee extends Model
     public $appends = [
         'full_name'
     ];
+
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class);
+    }
 }

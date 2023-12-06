@@ -20,5 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::controller(DepartmentController::class)
+    ->prefix('departments/employees')
+    ->group(function () {
+        Route::post('{department}', 'attachEmployee');
+        Route::patch('{department}', 'updateEmployees');
+    });
 Route::apiResource('departments', DepartmentController::class);
 Route::apiResource('employees', EmployeeController::class);
